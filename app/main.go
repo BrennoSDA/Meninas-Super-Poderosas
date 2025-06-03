@@ -6,13 +6,19 @@ import (
 	"net/http"
 )
 
-func main () {
-	fileserver := http.FileServer(http.Dir("./static"))
+func main() {
 
-	http.Handle("/", fileserver)
+	fileServer := http.FileServer(http.Dir("./static"))
 
-	fmt.Printf("Port running on http://localhost:8081/\n")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" {
+			http.Redirect(w, r, "/Login/Login.html", http.StatusFound)
+			return
+		}
+		fileServer.ServeHTTP(w, r)
+	})
 
+	fmt.Println("Servidor rodando em http://localhost:8081/")
 	if err := http.ListenAndServe(":8081", nil); err != nil {
 		log.Fatal(err)
 	}
