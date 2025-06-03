@@ -1,0 +1,195 @@
+/* === Reset e base === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+body {
+  background-color: #f4f6f8;
+  padding: 40px;
+  color: #333;
+}
+
+/* === Estrutura principal === */
+form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* === Títulos === */
+h1 {
+  font-size: 26px;
+  color: #fff;
+  background-color: #E91E63;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+h4 {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+h5 {
+  font-size: 16px;
+  color: #34495e;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* === Seções === */
+section {
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* === Labels e inputs === */
+label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+label:hover {
+  background-color: #f0f8ff;
+  border-radius: 6px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 5px;
+  background-color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus {
+  transform: scale(1.02);
+  border-color: #bbb;
+  outline: none;
+  box-shadow: 0 0 5px rgba(21, 101, 192, 0.2);
+}
+
+/* === Radio e checkbox === */
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.1);
+  accent-color: #1976d2;
+}
+
+/* === Campo de etnia "Outra" === */
+#campoOutra {
+  display: none;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+/* === Botão === */
+#Salvar {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 20px;
+  background-color: #E91E63;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#Salvar:hover {
+  background-color: #C2185B;
+}
+
+/* === Prevenção do autofill (Chrome) === */
+input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #333 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  form {
+    padding: 16px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h4, h5 {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+
+.salvar-area {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.Sair {
+  background-color: #f498b0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.Sair:hover {
+  background-color: #f76e93;
+  color: white;
+}
