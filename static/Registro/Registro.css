@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #eef1f6;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  display: flex;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  background-color: white; /* <- ISSO AQUI É O FUNDO BRANCO */
+  overflow: hidden;
+  transition: all 0.8s ease-in-out;
+}
+
+
+/* Ambos os lados */
+.side {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: transform 0.8s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Formulário (lado branco) */
+.form-side {
+  left: 0;
+  background: white;
+  z-index: 2;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.panel-side {
+  right: 0;
+  background: #f498b0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 100px 0 0 100px; /* CANTOS INTERNOS arredondados */
+  transition: all 0.8s ease-in-out;
+}
+
+
+/* Efeito de troca */
+.container.inverted .form-side {
+  transform: translateX(100%);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.container.inverted .panel-side {
+  transform: translateX(-100%);
+  border-radius: 0 60px 60px 0; /* CANTOS INTERNOS arredondados invertidos */
+}
+
+
+/* Conteúdo do formulário */
+form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+}
+
+form h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+}
+
+form input {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+form a {
+  font-size: 13px;
+  color: #5f82f5;
+  text-decoration: none;
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+form a:hover {
+  text-decoration: underline;
+}
+
+form button {
+  padding: 12px;
+  background-color: #F8BBD0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background-color: #f76e93;
+}
+
+/* Botão no painel */
+.panel-side button {
+  padding: 16px 36px;
+  background-color: white;
+  color: #ff0055;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  
+}
+
+.panel-side button:hover {
+  background-color: #ff0055;
+  color: #fff;
+}
+
+.popup-sucesso {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 28px;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+.popup-sucesso.show {
+  opacity: 1;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  form {
+    padding: 16px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h4, h5 {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
