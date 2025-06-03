@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página do Paciente</title>
+  <link rel="stylesheet" href="Paciente.css">
+</head>
+<body>
+  <div class="dashboard">
+
+      <div class="logout-area">
+  <a href="/Login/Login.html" class="Sair">Sair</a>
+</div>
+
+    <h1>Bem-vinda, Maria!</h1>
+
+    <!-- Marcar Consulta -->
+    <section class="card">
+      <h2>Marcar Consulta</h2>
+      <form class="consulta-form">
+        <label>Especialidade:
+          <select required>
+            <option value="">Selecione</option>
+            <option>Ginecologia</option>
+            <option>Clínico Geral</option>
+            <option>Pediatria</option>
+          </select>
+        </label>
+
+        <label>Data:
+          <input type="date" required />
+        </label>
+
+        <label>Horário:
+          <input type="time" required />
+        </label>
+
+        <button type="submit">Agendar</button>
+      </form>
+    </section>
+
+    <!-- Resultados de Exames -->
+    <section class="card">
+      <h2>Resultados de Exames</h2>
+      <ul class="exames-lista">
+        <li><strong>Citopatológico:</strong> Disponível <a href="/Resultado - Paciente/Resultado.html">(Ver resultado)</a></li>
+        <li><strong>Hemograma:</strong> Aguardando resultado</li>
+        <li><strong>Ultrassom:</strong> Agendado para 10/06/2025</li>
+      </ul>
+    </section>
+
+    <!-- Alertas -->
+    <section class="card alertas">
+      <h2>Alertas Importantes</h2>
+      <p>📌 Você tem uma consulta agendada para <strong>03/06/2025 às 09:00</strong></p>
+      <p>📌 Seu resultado citopatológico está disponível.</p>
+    </section>
+  </div>
+</body>
+</html>
