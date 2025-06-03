@@ -1,0 +1,164 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  padding: 40px 20px;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  color: #E91E63;
+  margin-bottom: 10px;
+}
+
+.card {
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 20px;
+}
+
+.consulta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.consulta-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+}
+
+.consulta-form select,
+.consulta-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.consulta-form button {
+  padding: 12px;
+  background-color: #ec407a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-self: start;
+  width: 160px;
+}
+
+.consulta-form button:hover {
+  background-color: #d81b60;
+}
+
+.exames-lista {
+  list-style: none;
+  padding-left: 0;
+  font-size: 15px;
+}
+
+.exames-lista li {
+  margin-bottom: 10px;
+}
+
+.exames-lista a {
+  color: #ec407a;
+  text-decoration: none;
+}
+
+.exames-lista a:hover {
+  text-decoration: underline;
+}
+
+.alertas p {
+  background-color: #fff3f6;
+  border-left: 4px solid #ec407a;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.logout-area {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.Sair {
+  background-color: #f498b0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.Sair:hover {
+  background-color: #f76e93;
+  color: white;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  form {
+    padding: 16px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h4, h5 {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
