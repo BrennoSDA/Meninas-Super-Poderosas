@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="Labratorio.css" />
+  <title>Identificação e Avaliação Citopatológica</title>
+</head>
+<body>
+  <form>
+    <h1>Identificação do Laboratório</h1>
+
+    <section>
+      <label for="cnesLab">CNES do laboratório:
+        <input type="text" name="cnesLab" id="cnesLab" required />
+      </label>
+
+      <label for="numExame">Número do Exame:
+        <input type="text" name="numExame" id="numExame" required />
+      </label>
+
+      <label for="nomeLab">Nome do Laboratório:
+        <input type="text" name="nomeLab" id="nomeLab" required />
+      </label>
+
+      <label for="recebido">Recebido em:
+        <input type="date" name="recebido" id="recebido" required />
+      </label>
+    </section>
+
+    <h1>Resultado do Exame Citopatológico - Colo do Útero</h1>
+
+    <section>
+      <h5>Amostra Rejeitada Por:</h5>
+      <label>
+        <input type="checkbox" name="rejeicao" onclick="onlyOne(this)">
+        Ausência ou erro na identificação da lâmina, frasco ou formulário
+      </label>
+      <label>
+        <input type="checkbox" name="rejeicao" onclick="onlyOne(this)">
+        Lâmina danificada ou ausente
+      </label>
+      <label>
+        <input type="checkbox" name="rejeicao" onclick="onlyOne(this); toggleInput(this, 'input1')">
+        Causas alheias ao laboratório; especificar:
+        <input type="text" id="input1" class="especificar" name="causaAlheia" />
+      </label>
+      <label>
+        <input type="checkbox" name="rejeicao" onclick="onlyOne(this); toggleInput(this, 'input2')">
+        Outras causas; especificar:
+        <input type="text" id="input2" class="especificar" name="outrasCausas" />
+      </label>
+    </section>
+
+    <section>
+      <h5>Epitélios representados na amostra:</h5>
+      <label><input type="checkbox" name="epitelio" /> Escamoso</label>
+      <label><input type="checkbox" name="epitelio" /> Glandular</label>
+      <label><input type="checkbox" name="epitelio" /> Metaplásico</label>
+    </section>
+
+    <section>
+      <h5>Adequabilidade do Material</h5>
+      <label><input type="checkbox" name="adequado" /> Satisfatória</label>
+
+      <h5>Insatisfatória para avaliação oncótica devido a:</h5>
+      <label><input type="checkbox" name="motivo1" /> Material acelular ou hipocelular em menos de 10% do esfregaço</label>
+      <label><input type="checkbox" name="motivo2" /> Sangue em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo3" /> Piócitos em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo4" /> Artefatos de dessecamento em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo5" /> Contaminantes externos em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo6" /> Intensa superposição celular em mais de 75% do esfregaço</label>
+
+      <label>
+        <input type="checkbox" name="motivoOutro" onclick="toggleInput(this, 'input3')" />
+        Outros, especificar:
+        <input type="text" name="outros" class="especificar" id="input3" />
+      </label>
+    </section>
+
+    <div class="salvar-area">
+  <a href="/Cadastrar exames/cadastroExame.html" class="Sair">Salvar</a>
+  </form>
+
+  <script>
+    function onlyOne(checkbox) {
+      const checkboxes = document.getElementsByName(checkbox.name);
+      checkboxes.forEach((cb) => {
+        if (cb !== checkbox) {
+          cb.checked = false;
+
+          // esconde campos extras se necessário
+          const inputId = cb.getAttribute("onclick")?.match(/'([^']+)'/)?.[1];
+          if (inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+              input.style.display = "none";
+              input.required = false;
+            }
+          }
+        }
+      });
+    }
+
+    function toggleInput(checkbox, inputId) {
+      const input = document.getElementById(inputId);
+      if (checkbox.checked) {
+        input.style.display = "block";
+        input.required = true;
+      } else {
+        input.style.display = "none";
+        input.required = false;
+      }
+    }
+  </script>
+</body>
+</html>
