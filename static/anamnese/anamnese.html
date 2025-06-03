@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="Anamnese.css" />
+  <title>Anamnese e Exame Clínico</title>
+</head>
+<body>
+  <form>
+    <h1>Dados da Anamnese</h1>
+
+    <section>
+      <h5>1. Motivo do exame*</h5>
+      <label><input type="checkbox" name="motivo"> Rastreamento</label>
+      <label><input type="checkbox" name="motivo"> Repetição (exame alterado ASCUS/Baixo grau)</label>
+      <label><input type="checkbox" name="motivo"> Seguimento (pós diagnóstico colposcópico / tratamento)</label>
+
+      <h5>2. Fez o exame preventivo (Papanicolau) alguma vez?*</h5>
+      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Não sabe</label>
+      <label>Se sim, quando fez o último exame?
+        <input type="text" placeholder="ano" maxlength="4">
+      </label>
+
+      <h5>3. Usa DIU?*</h5>
+      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Não sabe</label>
+
+      <h5>4. Está grávida?*</h5>
+      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Não sabe</label>
+
+      <h5>5. Usa pílula anticoncepcional?*</h5>
+      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Não sabe</label>
+
+      <h5>6. Usa hormônio / remédio para tratar a menopausa?*</h5>
+      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Não sabe</label>
+
+      <h5>7. Já fez tratamento por radioterapia?*</h5>
+      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Sim</label>
+      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Não</label>
+      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Não sabe</label>
+
+      <h5>8. Data da última menstruação / regra:*</h5>
+      <label>Data da coleta*:
+  <input type="date" name="dataColeta" id="dataColeta"
+         min="1900-01-01" max="2100-12-31" value="2025-01-01" required>
+</label>
+
+      <label><input type="checkbox" name="menstruacao"> Não sabe / Não lembra</label>
+
+      <h5>9. Tem ou teve algum sangramento após relações sexuais?*</h5>
+      <label><input type="checkbox" name="sangramento_sexual"> Sim</label>
+      <label><input type="checkbox" name="sangramento_sexual"> Não</label>
+      <label><input type="checkbox" name="sangramento_sexual"> Não sabe / Não lembra</label>
+
+      <h5>10. Tem ou teve algum sangramento após a menopausa?*</h5>
+      <label><input type="checkbox" name="sangramento_menopausa"> Sim</label>
+      <label><input type="checkbox" name="sangramento_menopausa"> Não</label>
+      <label><input type="checkbox" name="sangramento_menopausa"> Não sabe / Não lembra</label>
+      <label><input type="checkbox" name="sangramento_menopausa"> Não está na menopausa</label>
+    </section>
+
+    <h1>Exame Clínico</h1>
+
+    <section>
+      <h5>11. Inspeção do colo*</h5>
+      <label><input type="checkbox" name="colo"> Normal</label>
+      <label><input type="checkbox" name="colo"> Ausente (anomal. congênitas ou retirada cirurgicamente)</label>
+      <label><input type="checkbox" name="colo"> Alterado</label>
+      <label><input type="checkbox" name="colo"> Colo não visualizado</label>
+
+      <h5>12. Sinais sugestivos de doenças sexualmente transmissíveis?</h5>
+      <label><input type="checkbox" name="dst"> Sim</label>
+      <label><input type="checkbox" name="dst"> Não</label>
+
+      <p><strong>NOTA:</strong> Na presença de colo alterado, com lesão sugestiva de câncer, não aguardar o resultado do exame citopatológico para encaminhar a mulher para colposcopia.</p>
+
+      <label>Data da coleta*:
+        <input type="date">
+      </label>
+
+      <label>Responsável*:
+        <input type="text">
+      </label>
+    </section>
+
+   <div class="salvar-area">
+  <a href="/Cadastrar exames/cadastroExame.html" class="Sair">Salvar</a>
+  </form>
+
+  <script>
+    function onlyOne(checkbox) {
+      const groupName = checkbox.name;
+      const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+      checkboxes.forEach(cb => {
+        if (cb !== checkbox) {
+          cb.checked = false;
+        }
+      });
+    }
+
+  const input = document.getElementById('dataExame');
+  input.addEventListener('change', () => {
+    const data = new Date(input.value);
+    const ano = data.getFullYear();
+    if (ano < 1900 || ano > 2200) {
+      alert("Por favor, insira uma data válida.");
+      input.value = "";
+    }
+  });
+
+  </script>
+</body>
+</html>
