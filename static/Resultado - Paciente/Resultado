@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="Resultado.css" />
+  <title>Resultado</title>
+</head>
+<body>
+  <form>
+    <div id="laboratório">
+      <h1>Diagnóstico</h1>
+
+      <h3>Diagnóstico descritivo</h3>
+
+      <div id="main-content">
+        <!-- Coluna esquerda -->
+        <div id="left-column">
+          <h5>Dentro dos limites da normalidade no material examinado?</h5>
+          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Sim</label>
+          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Não</label>
+
+          <h5>Alterações Celulares Benignas Reativas ou Reparativas</h5>
+          <label><input type="checkbox" name="option"> Inflamação</label>
+          <label><input type="checkbox" name="option"> Metaplasia escamosa imatura</label>
+          <label><input type="checkbox" name="option"> Reparação</label>
+          <label><input type="checkbox" name="option"> Atrofia com inflamação</label>
+          <label>
+            <input type="checkbox" name="option" onclick="toggleInput(this, 'input1')"> Radiação
+            <input type="text" id="input1" class="especificar">
+          </label>
+          <label>
+            <input type="checkbox" name="option" onclick="toggleInput(this, 'input2')"> Outros; especificar:
+            <input type="text" id="input2" class="especificar">
+          </label>
+        </div>
+
+        <!-- Coluna direita -->
+        <div id="right-column">
+          <h4>Células atípicas de significado indeterminado</h4>
+
+          <h5>Escamosa:</h5>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas (ASC-US)</label>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada (ASC-H)</label>
+
+          <h5>Glandulares:</h5>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
+
+          <h5>De origem indefinida:</h5>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
+          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
+
+          <h5>Atipias Em Células Escamosas:</h5>
+          <label><input type="checkbox"> Lesão intra-epitelial de baixo grau</label>
+          <label><input type="checkbox"> Lesão intra-epitelial de alto grau</label>
+          <label><input type="checkbox"> Alto grau com possível micro-invasão</label>
+          <label><input type="checkbox"> Carcinoma epidermóide invasor</label>
+
+          <h5>Atipias Em Células Glandulares</h5>
+          <label><input type="checkbox"> Adenocarcinoma in situ</label>
+          <h6>Adenocarcinoma invasor:</h6>
+          <label><input type="checkbox"> Cervical</label>
+          <label><input type="checkbox"> Endometrial</label>
+          <label><input type="checkbox"> Sem especificações</label>
+          <label>
+            <input type="checkbox" onclick="toggleInput(this, 'input3')"> Outras neoplasias malignas:
+            <input type="text" id="input3" class="especificar">
+          </label>
+          <label>
+            <input type="checkbox"> Células endometriais (pós-menopausa ou acima de 40 anos fora do ciclo)
+          </label>
+        </div>
+      </div>
+
+      <label>Observações Gerais:
+        <input type="text">
+      </label>
+
+      <label>Screening pelo citotécnico:
+        <input type="text">
+      </label>
+
+      <label>Responsável:
+        <input type="text">
+      </label>
+
+      <label>Data do resultado:
+        <input type="date">
+      </label>
+
+       <div class="salvar-area">
+  <a href="/Paciente/inicioPaciente.html" class="Sair"> Voltar </a>
+    </div>
+  </form>
+
+  <script>
+    function onlyOne(checkbox) {
+      const groupName = checkbox.name;
+      const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+      checkboxes.forEach(cb => {
+        if (cb !== checkbox) {
+          cb.checked = false;
+        }
+      });
+    }
+
+    function toggleInput(checkbox, inputId) {
+      const input = document.getElementById(inputId);
+      if (checkbox.checked) {
+        input.style.display = 'block';
+        input.required = true;
+      } else {
+        input.style.display = 'none';
+        input.required = false;
+      }
+    }
+  </script>
+</body>
+</html>
