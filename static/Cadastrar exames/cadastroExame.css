@@ -1,0 +1,207 @@
+/* cadastroExame.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #eef1f6;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  min-height: 100vh;      
+  overflow-y: auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #F8BBD0;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  border: none;
+}
+
+.btn:focus,
+.btn:visited,
+.btn:active {
+  color: white;
+  background-color: #f76e93;
+  outline: none;
+  text-decoration: none;
+}
+
+
+.btn:hover {
+  background-color: #f76e93;
+}
+
+
+.container {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  width: 800px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.section {
+  background-color: #f498b0;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.section p,
+.section label {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  background-color: #F8BBD0;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #f76e93;
+}
+
+.data-entry-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.data-entry {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.data-entry label {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.salvar-area {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.Sair {
+  background-color: #f498b0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.Sair:hover {
+  background-color: #f76e93;
+  color: white;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  form {
+    padding: 16px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h4, h5 {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
