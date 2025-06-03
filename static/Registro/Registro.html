@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro</title>
+  <link rel="stylesheet" href="Registro.css" />
+</head>
+<body>
+  <div class="container" id="container">
+    <!-- Lado do formulário -->
+    <div class="side form-side" id="formSide">
+      <form id="registerForm">
+        <h2 id="registerTitle">Registro Profissional</h2>
+        
+        <input type="email" placeholder="Email" required id="email" />
+
+        <!-- Campos que mudam dinamicamente -->
+        <div id="dynamicFields">
+          <input type="text" placeholder="CNES" required id="cnes" />
+        </div>
+
+        <input type="password" placeholder="Senha" required id="senha" />
+        <input type="password" placeholder="Confirmar Senha" required id="confirmarSenha" />
+
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+
+    <!-- Lado do painel -->
+    <div class="side panel-side" id="panelSide">
+      <button id="toggleButton">Sou Paciente</button>
+    </div>
+  </div>
+
+  <!-- Pop-up de sucesso -->
+  <div id="popupSucesso" class="popup-sucesso">
+    Registrado com sucesso!
+  </div>
+
+  <script>
+    const form = document.getElementById("registerForm");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const popup = document.getElementById("popupSucesso");
+      popup.classList.add("show");
+
+      // Oculta após 1.5s
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 1500);
+
+      // Redireciona após 2s
+      setTimeout(() => {
+  window.location.href = "../Login/Login.html"; // Correto: volta 1 pasta
+}, 2000);
+
+    });
+
+    const container = document.getElementById("container");
+    const toggleButton = document.getElementById("toggleButton");
+    const registerTitle = document.getElementById("registerTitle");
+    const dynamicFields = document.getElementById("dynamicFields");
+
+    let isPaciente = false;
+
+    function atualizarCampos() {
+      dynamicFields.innerHTML = isPaciente
+        ? `
+          <input type="text" placeholder="CPF" required id="cpf" />
+          <input type="tel" placeholder="Telefone" required id="telefone" />
+        `
+        : `
+          <input type="text" placeholder="CNES" required id="cnes" />
+        `;
+    }
+
+    toggleButton.addEventListener("click", () => {
+      isPaciente = !isPaciente;
+      container.classList.toggle("inverted");
+
+      registerTitle.textContent = isPaciente ? "Registro Paciente" : "Registro Profissional";
+      toggleButton.textContent = isPaciente ? "Sou Profissional" : "Sou Paciente";
+
+      atualizarCampos();
+    });
+
+    atualizarCampos(); // Inicializa os campos corretamente
+  </script>
+</body>
+</html>
