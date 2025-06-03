@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="Login.css" />
+</head>
+<body>
+  <div class="container" id="container">
+    <!-- Lado do formulário -->
+    <div class="side form-side" id="formSide">
+      <form>
+        <h2 id="loginTitle">Login Profissional</h2>
+        <input type="text" placeholder="Usuário ou Email" required />
+        <input type="password" placeholder="Senha" required />
+        <a href="/Senha/senha.html">Esqueci minha senha</a>
+        <a href="/Registro/Registro.html">Não possui cadastro? Registre-se</a>
+        <button type="button" id="entrarBtn">Entrar</button>
+      </form>
+    </div>
+
+    <!-- Lado do painel -->
+    <div class="side panel-side" id="panelSide">
+      <button id="toggleButton">Trocar para Paciente</button>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("container");
+    const toggleButton = document.getElementById("toggleButton");
+    const loginTitle = document.getElementById("loginTitle");
+    const entrarBtn = document.getElementById("entrarBtn");
+
+    let isPaciente = false;
+
+    toggleButton.addEventListener("click", () => {
+      isPaciente = !isPaciente;
+      container.classList.toggle("inverted");
+
+      if (isPaciente) {
+        loginTitle.textContent = "Login Paciente";
+        toggleButton.textContent = "Trocar para Profissional";
+      } else {
+        loginTitle.textContent = "Login Profissional";
+        toggleButton.textContent = "Trocar para Paciente";
+      }
+    });
+
+    entrarBtn.addEventListener("click", () => {
+      if (isPaciente) {
+        // Redireciona para a tela do paciente
+        window.location.href = "/Paciente/inicioPaciente.html";
+      } else {
+        // Redireciona para a tela do profissional
+        window.location.href = "/Profissional/inicioProfissional.html";
+      }
+    });
+  </script>
+</body>
+</html>
