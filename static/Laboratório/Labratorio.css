@@ -1,0 +1,204 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+body {
+  background-color: #f4f6f8;
+  padding: 40px;
+  color: #333;
+}
+
+form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+h1 {
+  font-size: 26px;
+  color: #ffffff;
+  background-color: #E91E63;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+h4, h5, h6 {
+  color: #34495e;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+section {
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+label:hover {
+  background-color: #f0f8ff;
+  border-radius: 6px;
+}
+
+input[type="text"],
+input[type="date"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+  transform: scale(1.02);
+  border-color: #bbb;
+  outline: none;
+  box-shadow: 0 0 5px rgba(21, 101, 192, 0.2);
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.1);
+  accent-color: #1976d2;
+}
+
+.especificar {
+  display: none;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+#main-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+#left-column,
+#right-column {
+  flex: 1 1 300px;
+  min-width: 280px;
+}
+
+button {
+  background-color: #1976d2;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+#Salvar {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #E91E63; /* Rosa escuro */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+#Salvar:hover {
+  background-color: #C2185B; /* Tom mais escuro ao passar o mouse */
+}
+
+.salvar-area {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.Sair {
+  background-color: #f498b0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.Sair:hover {
+  background-color: #f76e93;
+  color: white;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  form {
+    padding: 16px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h4, h5 {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
