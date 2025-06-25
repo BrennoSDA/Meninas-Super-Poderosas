@@ -3,28 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="Labratorio.css" />
+  <link rel="stylesheet" href="/static/Laboratório/Labratorio.css" />
   <title>Identificação e Avaliação Citopatológica</title>
 </head>
 <body>
-  <form>
+  <form action="/exames/laboratorio" method="POST">
+    <input type="hidden" name="paciente_id" value="">
+    <input type="hidden" name="cpf" value="<%= cpf %>">
+    
     <h1>Identificação do Laboratório</h1>
 
     <section>
       <label for="cnesLab">CNES do laboratório:
-        <input type="text" name="cnesLab" id="cnesLab" required />
-      </label>
-
-      <label for="numExame">Número do Exame:
-        <input type="text" name="numExame" id="numExame" required />
+        <input type="text" name="cnes_lab" id="cnesLab" required />
       </label>
 
       <label for="nomeLab">Nome do Laboratório:
-        <input type="text" name="nomeLab" id="nomeLab" required />
+        <input type="text" name="nome_lab" id="nomeLab" required />
+      </label>
+
+      <label for="numExame">Número do Exame:
+        <input type="text" name="numero_exame" id="numExame" required />
       </label>
 
       <label for="recebido">Recebido em:
-        <input type="date" name="recebido" id="recebido" required />
+        <input type="date" name="recebido_em" id="recebido" required />
       </label>
     </section>
 
@@ -33,85 +36,62 @@
     <section>
       <h5>Amostra Rejeitada Por:</h5>
       <label>
-        <input type="checkbox" name="rejeicao" onclick="onlyOne(this)">
+        <input type="radio" name="amostra_rejeitada" value="Ausência ou erro na identificação">
         Ausência ou erro na identificação da lâmina, frasco ou formulário
       </label>
       <label>
-        <input type="checkbox" name="rejeicao" onclick="onlyOne(this)">
+        <input type="radio" name="amostra_rejeitada" value="Lâmina danificada ou ausente">
         Lâmina danificada ou ausente
       </label>
       <label>
-        <input type="checkbox" name="rejeicao" onclick="onlyOne(this); toggleInput(this, 'input1')">
-        Causas alheias ao laboratório; especificar:
-        <input type="text" id="input1" class="especificar" name="causaAlheia" />
-      </label>
-      <label>
-        <input type="checkbox" name="rejeicao" onclick="onlyOne(this); toggleInput(this, 'input2')">
+        <input type="radio" name="amostra_rejeitada" value="Outras causas">
         Outras causas; especificar:
-        <input type="text" id="input2" class="especificar" name="outrasCausas" />
+        <input type="text" name="causa_rejeicao" class="especificar" />
       </label>
     </section>
 
     <section>
       <h5>Epitélios representados na amostra:</h5>
-      <label><input type="checkbox" name="epitelio" /> Escamoso</label>
-      <label><input type="checkbox" name="epitelio" /> Glandular</label>
-      <label><input type="checkbox" name="epitelio" /> Metaplásico</label>
+        <label><input type="checkbox" name="epitelio" value="Escamoso"> Escamoso</label>
+        <label><input type="checkbox" name="epitelio" value="Glandular"> Glandular</label>
+        <label><input type="checkbox" name="epitelio" value="Metaplásico"> Metaplásico</label>
     </section>
 
     <section>
       <h5>Adequabilidade do Material</h5>
-      <label><input type="checkbox" name="adequado" /> Satisfatória</label>
+      <label><input type="radio" name="adequabilidade_material" value="Satisfatória"> Satisfatória</label>
+      <label><input type="radio" name="adequabilidade_material" value="Insatisfatória"> Insatisfatória</label>
 
-      <h5>Insatisfatória para avaliação oncótica devido a:</h5>
-      <label><input type="checkbox" name="motivo1" /> Material acelular ou hipocelular em menos de 10% do esfregaço</label>
-      <label><input type="checkbox" name="motivo2" /> Sangue em mais de 75% do esfregaço</label>
-      <label><input type="checkbox" name="motivo3" /> Piócitos em mais de 75% do esfregaço</label>
-      <label><input type="checkbox" name="motivo4" /> Artefatos de dessecamento em mais de 75% do esfregaço</label>
-      <label><input type="checkbox" name="motivo5" /> Contaminantes externos em mais de 75% do esfregaço</label>
-      <label><input type="checkbox" name="motivo6" /> Intensa superposição celular em mais de 75% do esfregaço</label>
-
+      <h5>Motivo (se insatisfatória):</h5>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Material acelular"> Material acelular ou hipocelular em menos de 10% do esfregaço</label>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Sangue"> Sangue em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Piócitos"> Piócitos em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Dessecamento"> Artefatos de dessecamento em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Contaminantes"> Contaminantes externos em mais de 75% do esfregaço</label>
+      <label><input type="checkbox" name="motivo_insatisfatorio" value="Superposição"> Intensa superposição celular em mais de 75% do esfregaço</label>
       <label>
-        <input type="checkbox" name="motivoOutro" onclick="toggleInput(this, 'input3')" />
+        <input type="checkbox" name="motivo_insatisfatorio" value="Outros">
         Outros, especificar:
-        <input type="text" name="outros" class="especificar" id="input3" />
+        <input type="text" name="outros_motivos" class="especificar" />
       </label>
     </section>
 
     <div class="salvar-area">
-  <a href="/Cadastrar exames/cadastroExame.html" class="Sair">Salvar</a>
+      <button type="submit" class="Sair" href="/static/Cadastrar exames/cadastroExame.html">Salvar</button>
+    </div>
   </form>
 
   <script>
-    function onlyOne(checkbox) {
-      const checkboxes = document.getElementsByName(checkbox.name);
-      checkboxes.forEach((cb) => {
-        if (cb !== checkbox) {
-          cb.checked = false;
-
-          // esconde campos extras se necessário
-          const inputId = cb.getAttribute("onclick")?.match(/'([^']+)'/)?.[1];
-          if (inputId) {
-            const input = document.getElementById(inputId);
-            if (input) {
-              input.style.display = "none";
-              input.required = false;
-            }
-          }
+    
+document.addEventListener('DOMContentLoaded', function() {
+    const pacienteId = localStorage.getItem('paciente_id');
+    if (pacienteId) {
+        const inputPacienteId = document.querySelector('input[name="paciente_id"]');
+        if (inputPacienteId) {
+            inputPacienteId.value = pacienteId;
         }
-      });
     }
-
-    function toggleInput(checkbox, inputId) {
-      const input = document.getElementById(inputId);
-      if (checkbox.checked) {
-        input.style.display = "block";
-        input.required = true;
-      } else {
-        input.style.display = "none";
-        input.required = false;
-      }
-    }
-  </script>
+});
+</script>
 </body>
 </html>
