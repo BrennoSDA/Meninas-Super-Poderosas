@@ -3,121 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="Anamnese.css" />
+  <link rel="stylesheet" href="/static/Anamnese/Anamnese.css" />
   <title>Anamnese e Exame Clínico</title>
 </head>
 <body>
-  <form>
+  <form action="/exames/anamnese" method="POST">
+
+<input type="hidden" name="cpf" id="cpfPaciente">
+
     <h1>Dados da Anamnese</h1>
 
     <section>
       <h5>1. Motivo do exame*</h5>
-      <label><input type="checkbox" name="motivo"> Rastreamento</label>
-      <label><input type="checkbox" name="motivo"> Repetição (exame alterado ASCUS/Baixo grau)</label>
-      <label><input type="checkbox" name="motivo"> Seguimento (pós diagnóstico colposcópico / tratamento)</label>
+      <label><input type="checkbox" name="motivo" value="Rastreamento"> Rastreamento</label>
+      <label><input type="checkbox" name="motivo" value="Repetição"> Repetição (exame alterado ASCUS/Baixo grau)</label>
+      <label><input type="checkbox" name="motivo" value="Seguimento"> Seguimento (pós diagnóstico colposcópico / tratamento)</label>
 
       <h5>2. Fez o exame preventivo (Papanicolau) alguma vez?*</h5>
-      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="preventivo" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="preventivo" value="Sim"> Sim</label>
+      <label><input type="radio" name="preventivo" value="Não"> Não</label>
+      <label><input type="radio" name="preventivo" value="Não sabe"> Não sabe</label>
       <label>Se sim, quando fez o último exame?
-        <input type="text" placeholder="ano" maxlength="4">
+        <input type="text" name="ultimo_exame_ano" placeholder="ano" maxlength="4">
       </label>
 
       <h5>3. Usa DIU?*</h5>
-      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="diu" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="diu" value="Sim"> Sim</label>
+      <label><input type="radio" name="diu" value="Não"> Não</label>
+      <label><input type="radio" name="diu" value="Não sabe"> Não sabe</label>
 
       <h5>4. Está grávida?*</h5>
-      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="gravida" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="gravida" value="Sim"> Sim</label>
+      <label><input type="radio" name="gravida" value="Não"> Não</label>
+      <label><input type="radio" name="gravida" value="Não sabe"> Não sabe</label>
 
       <h5>5. Usa pílula anticoncepcional?*</h5>
-      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="pilula" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="pilula" value="Sim"> Sim</label>
+      <label><input type="radio" name="pilula" value="Não"> Não</label>
+      <label><input type="radio" name="pilula" value="Não sabe"> Não sabe</label>
 
       <h5>6. Usa hormônio / remédio para tratar a menopausa?*</h5>
-      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="menopausa" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="menopausa" value="Sim"> Sim</label>
+      <label><input type="radio" name="menopausa" value="Não"> Não</label>
+      <label><input type="radio" name="menopausa" value="Não sabe"> Não sabe</label>
 
       <h5>7. Já fez tratamento por radioterapia?*</h5>
-      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Sim</label>
-      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Não</label>
-      <label><input type="checkbox" name="radio" onclick="onlyOne(this)"> Não sabe</label>
+      <label><input type="radio" name="radio" value="Sim"> Sim</label>
+      <label><input type="radio" name="radio" value="Não"> Não</label>
+      <label><input type="radio" name="radio" value="Não sabe"> Não sabe</label>
 
       <h5>8. Data da última menstruação / regra:*</h5>
-      <label>Data da coleta*:
-  <input type="date" name="dataColeta" id="dataColeta"
-         min="1900-01-01" max="2100-12-31" value="2025-01-01" required>
-</label>
-
-      <label><input type="checkbox" name="menstruacao"> Não sabe / Não lembra</label>
+      <input type="date" name="ultima_menstruacao">
+      <label><input type="checkbox" name="nao_lembra_menstruacao" value="true"> Não sabe / Não lembra</label>
 
       <h5>9. Tem ou teve algum sangramento após relações sexuais?*</h5>
-      <label><input type="checkbox" name="sangramento_sexual"> Sim</label>
-      <label><input type="checkbox" name="sangramento_sexual"> Não</label>
-      <label><input type="checkbox" name="sangramento_sexual"> Não sabe / Não lembra</label>
+      <label><input type="radio" name="sangramento_sexual" value="Sim"> Sim</label>
+      <label><input type="radio" name="sangramento_sexual" value="Não"> Não</label>
+      <label><input type="radio" name="sangramento_sexual" value="Não sabe / Não lembra"> Não sabe / Não lembra</label>
 
       <h5>10. Tem ou teve algum sangramento após a menopausa?*</h5>
-      <label><input type="checkbox" name="sangramento_menopausa"> Sim</label>
-      <label><input type="checkbox" name="sangramento_menopausa"> Não</label>
-      <label><input type="checkbox" name="sangramento_menopausa"> Não sabe / Não lembra</label>
-      <label><input type="checkbox" name="sangramento_menopausa"> Não está na menopausa</label>
-    </section>
-
-    <h1>Exame Clínico</h1>
-
-    <section>
-      <h5>11. Inspeção do colo*</h5>
-      <label><input type="checkbox" name="colo"> Normal</label>
-      <label><input type="checkbox" name="colo"> Ausente (anomal. congênitas ou retirada cirurgicamente)</label>
-      <label><input type="checkbox" name="colo"> Alterado</label>
-      <label><input type="checkbox" name="colo"> Colo não visualizado</label>
-
-      <h5>12. Sinais sugestivos de doenças sexualmente transmissíveis?</h5>
-      <label><input type="checkbox" name="dst"> Sim</label>
-      <label><input type="checkbox" name="dst"> Não</label>
-
-      <p><strong>NOTA:</strong> Na presença de colo alterado, com lesão sugestiva de câncer, não aguardar o resultado do exame citopatológico para encaminhar a mulher para colposcopia.</p>
+      <label><input type="radio" name="sangramento_menopausa" value="Sim"> Sim</label>
+      <label><input type="radio" name="sangramento_menopausa" value="Não"> Não</label>
+      <label><input type="radio" name="sangramento_menopausa" value="Não sabe / Não lembra"> Não sabe / Não lembra</label>
+      <label><input type="radio" name="sangramento_menopausa" value="Não está na menopausa"> Não está na menopausa</label>
 
       <label>Data da coleta*:
-        <input type="date">
-      </label>
-
-      <label>Responsável*:
-        <input type="text">
+        <input type="date" name="data_coleta">
       </label>
     </section>
 
-   <div class="salvar-area">
-  <a href="/Cadastrar exames/cadastroExame.html" class="Sair">Salvar</a>
+    <div class="form-group">
+        <label>CPF da paciente:</label>
+        <input type="text" id="cpfDisplay" disabled>
+    </div>
+
+    <div class="salvar-area">
+      <button type="submit" class="Sair" href="/static/Cadastrar exames/cadastroExame.html">Salvar</button>
+    </div>
   </form>
 
   <script>
-    function onlyOne(checkbox) {
-      const groupName = checkbox.name;
-      const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
-      checkboxes.forEach(cb => {
-        if (cb !== checkbox) {
-          cb.checked = false;
+    
+    // Obter o ID do paciente da URL ou do localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let pacienteId = urlParams.get('paciente_id');
+        
+        if (!pacienteId) {
+            pacienteId = localStorage.getItem('paciente_id');
         }
-      });
-    }
+        
+        if (pacienteId) {
+            const inputPacienteId = document.getElementById('paciente_id');
+            if (inputPacienteId) {
+                inputPacienteId.value = pacienteId;
+            }
+        }
+    });
 
-  const input = document.getElementById('dataExame');
-  input.addEventListener('change', () => {
-    const data = new Date(input.value);
-    const ano = data.getFullYear();
-    if (ano < 1900 || ano > 2200) {
-      alert("Por favor, insira uma data válida.");
-      input.value = "";
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Tentar obter CPF da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let cpf = urlParams.get('cpf');
+    
+    // 2. Se não encontrou na URL, tentar do localStorage
+    if (!cpf) {
+        cpf = localStorage.getItem('paciente_cpf');
     }
-  });
+    
+    // 3. Se encontrou o CPF, preencher o campo hidden
+    if (cpf) {
+        const cpfInput = document.querySelector('input[name="cpf"]');
+        if (cpfInput) {
+            cpfInput.value = cpf;
+        }
+    }
+});
 
+document.addEventListener('DOMContentLoaded', function() {
+    const cpf = localStorage.getItem('paciente_cpf');
+    if (cpf) {
+        document.getElementById('cpfPaciente').value = cpf;
+        document.getElementById('cpfDisplay').value = formatarCPF(cpf);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Tentar obter ID do paciente da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let pacienteId = urlParams.get('paciente_id');
+    
+    // Se não encontrou na URL, tentar do localStorage
+    if (!pacienteId) {
+        pacienteId = localStorage.getItem('paciente_id');
+    }
+    
+    // Se encontrou, criar campo hidden no formulário
+    if (pacienteId) {
+        const form = document.querySelector('form');
+        if (form) {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'paciente_id';
+            hiddenInput.value = pacienteId;
+            form.appendChild(hiddenInput);
+            
+            // Opcional: mostrar informações do paciente
+            const pacienteNome = localStorage.getItem('paciente_nome');
+            if (pacienteNome) {
+                const infoDiv = document.createElement('div');
+                infoDiv.innerHTML = `<h3>Paciente: ${pacienteNome}</h3>`;
+                form.prepend(infoDiv);
+            }
+        }
+    }
+});
+
+function formatarCPF(cpf) {
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
   </script>
 </body>
 </html>
