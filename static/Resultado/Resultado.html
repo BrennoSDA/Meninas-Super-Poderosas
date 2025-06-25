@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="Resultado.css" />
+  <link rel="stylesheet" href="/static/Resultado/Resultado.css" />
   <title>Resultado</title>
 </head>
 <body>
-  <form>
+  <form action="/exames/resultado" method="POST">
+    <input type="hidden" name="paciente_id" value="">
+    <input type="hidden" name="cpf" value="<%= cpf %>">
+    
     <div id="laboratório">
       <h1>Diagnóstico</h1>
 
@@ -17,21 +20,20 @@
         <!-- Coluna esquerda -->
         <div id="left-column">
           <h5>Dentro dos limites da normalidade no material examinado?</h5>
-          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Sim</label>
-          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Não</label>
+          <label><input type="radio" name="dentro_limites" value="sim"> Sim</label>
+          <label><input type="radio" name="dentro_limites" value="não"> Não</label>
 
           <h5>Alterações Celulares Benignas Reativas ou Reparativas</h5>
-          <label><input type="checkbox" name="option"> Inflamação</label>
-          <label><input type="checkbox" name="option"> Metaplasia escamosa imatura</label>
-          <label><input type="checkbox" name="option"> Reparação</label>
-          <label><input type="checkbox" name="option"> Atrofia com inflamação</label>
+          <label><input type="checkbox" name="alteracoes_benignas" value="Inflamação"> Inflamação</label>
+          <label><input type="checkbox" name="alteracoes_benignas" value="Metaplasia escamosa imatura"> Metaplasia escamosa imatura</label>
+          <label><input type="checkbox" name="alteracoes_benignas" value="Reparação"> Reparação</label>
+          <label><input type="checkbox" name="alteracoes_benignas" value="Atrofia com inflamação"> Atrofia com inflamação</label>
           <label>
-            <input type="checkbox" name="option" onclick="toggleInput(this, 'input1')"> Radiação
-            <input type="text" id="input1" class="especificar">
+            <input type="checkbox" name="alteracoes_benignas" value="Radiação"> Radiação
           </label>
           <label>
-            <input type="checkbox" name="option" onclick="toggleInput(this, 'input2')"> Outros; especificar:
-            <input type="text" id="input2" class="especificar">
+            <input type="checkbox" name="alteracoes_benignas" value="Outros"> Outros; especificar:
+            <input type="text" name="outras_alteracoes" class="especificar">
           </label>
         </div>
 
@@ -40,81 +42,91 @@
           <h4>Células atípicas de significado indeterminado</h4>
 
           <h5>Escamosa:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas (ASC-US)</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada (ASC-H)</label>
+          <label><input type="checkbox" name="celulas_atipicas" value="ASC-US"> Possivelmente não neoplásicas (ASC-US)</label>
+          <label><input type="checkbox" name="celulas_atipicas" value="ASC-H"> Lesão de alto grau não descartada (ASC-H)</label>
 
           <h5>Glandulares:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
-
-          <h5>De origem indefinida:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
+          <label><input type="checkbox" name="celulas_atipicas" value="Glandular não neoplásicas"> Possivelmente não neoplásicas</label>
+          <label><input type="checkbox" name="celulas_atipicas" value="Glandular alto grau"> Lesão de alto grau não descartada</label>
 
           <h5>Atipias Em Células Escamosas:</h5>
-          <label><input type="checkbox"> Lesão intra-epitelial de baixo grau</label>
-          <label><input type="checkbox"> Lesão intra-epitelial de alto grau</label>
-          <label><input type="checkbox"> Alto grau com possível micro-invasão</label>
-          <label><input type="checkbox"> Carcinoma epidermóide invasor</label>
+          <label><input type="checkbox" name="atipias_celulares" value="Baixo grau"> Lesão intra-epitelial de baixo grau</label>
+          <label><input type="checkbox" name="atipias_celulares" value="Alto grau"> Lesão intra-epitelial de alto grau</label>
+          <label><input type="checkbox" name="atipias_celulares" value="Micro-invasão"> Alto grau com possível micro-invasão</label>
+          <label><input type="checkbox" name="atipias_celulares" value="Carcinoma"> Carcinoma epidermóide invasor</label>
 
           <h5>Atipias Em Células Glandulares</h5>
-          <label><input type="checkbox"> Adenocarcinoma in situ</label>
+          <label><input type="checkbox" name="atipias_celulares" value="Adenocarcinoma in situ"> Adenocarcinoma in situ</label>
           <h6>Adenocarcinoma invasor:</h6>
-          <label><input type="checkbox"> Cervical</label>
-          <label><input type="checkbox"> Endometrial</label>
-          <label><input type="checkbox"> Sem especificações</label>
+          <label><input type="checkbox" name="outras_neoplasias" value="Cervical"> Cervical</label>
+          <label><input type="checkbox" name="outras_neoplasias" value="Endometrial"> Endometrial</label>
+          <label><input type="checkbox" name="outras_neoplasias" value="Sem especificações"> Sem especificações</label>
           <label>
-            <input type="checkbox" onclick="toggleInput(this, 'input3')"> Outras neoplasias malignas:
-            <input type="text" id="input3" class="especificar">
+            <input type="checkbox" name="outras_neoplasias" value="Outras"> Outras neoplasias malignas:
+            <input type="text" name="outras_neoplasias_texto" class="especificar">
           </label>
           <label>
-            <input type="checkbox"> Células endometriais (pós-menopausa ou acima de 40 anos fora do ciclo)
+            <input type="checkbox" name="celulas_endometriais" value="true"> Células endometriais (pós-menopausa ou acima de 40 anos fora do ciclo)
           </label>
         </div>
       </div>
 
       <label>Observações Gerais:
-        <input type="text">
+        <input type="text" name="observacoes_gerais">
       </label>
 
       <label>Screening pelo citotécnico:
-        <input type="text">
+        <input type="text" name="screening_citotecnico">
       </label>
 
-      <label>Responsável:
-        <input type="text">
+      <label>Responsável*:
+        <input type="text" name="responsavel" required>
       </label>
 
-      <label>Data do resultado:
-        <input type="date">
+      <label>Data do resultado*:
+        <input type="date" name="data_resultado" required>
       </label>
 
        <div class="salvar-area">
-  <a href="/Cadastrar exames/cadastroExame.html" class="Sair">Salvar</a>
+        <button type="submit" class="Sair" href="/static/Cadastrar exames/cadastroExame.html">Salvar</button>
+      </div>
     </div>
   </form>
 
   <script>
-    function onlyOne(checkbox) {
-      const groupName = checkbox.name;
-      const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
-      checkboxes.forEach(cb => {
-        if (cb !== checkbox) {
-          cb.checked = false;
+    
+document.addEventListener('DOMContentLoaded', function() {
+    const pacienteId = localStorage.getItem('paciente_id');
+    if (pacienteId) {
+        const inputPacienteId = document.querySelector('input[name="paciente_id"]');
+        if (inputPacienteId) {
+            inputPacienteId.value = pacienteId;
         }
-      });
     }
+});
 
-    function toggleInput(checkbox, inputId) {
-      const input = document.getElementById(inputId);
-      if (checkbox.checked) {
-        input.style.display = 'block';
-        input.required = true;
-      } else {
-        input.style.display = 'none';
-        input.required = false;
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Tenta obter da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let pacienteId = urlParams.get('paciente_id');
+    
+    // 2. Se não encontrou, tenta do localStorage
+    if (!pacienteId) {
+        pacienteId = localStorage.getItem('paciente_id');
     }
-  </script>
+    
+    // 3. Se encontrou, preenche o campo hidden
+    if (pacienteId) {
+        document.querySelector('input[name="paciente_id"]').value = pacienteId;
+    } else {
+        alert("Erro: ID do paciente não encontrado. Volte à página anterior.");
+    }
+});
+
+// Após encontrar o paciente:
+document.getElementById('linkResultado').href = `/exames/resultado?paciente_id=${data.id}`;
+
+</script>
+
 </body>
 </html>
