@@ -4,28 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastrar Exame</title>
-  <link rel="stylesheet" href="cadastroExame.css">
+  <link rel="stylesheet" href="/static/Cadastrar exames/cadastroExame.css">
 </head>
 <body>
+  <form id="buscaPacienteForm">
   <div class="container">
     <div class="section">
       <h3 class="section-title">📄 Cadastrar exame da paciente</h3>
-
+      
       <div class="form-group">
-        <label>Nome completo da paciente:</label>
-        <input type="text" placeholder="Nome completo" required>
-
-        <label>CPF da paciente:</label>
-        <input type="text" placeholder="CPF" required>
-
-        <label>Cartão SUS:</label>
-        <input type="text" placeholder="Cartão SUS" required>
-
+        
+        <label>CPF da paciente*:</label>
+        <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
+        
         <div class="button-wrapper">
-          <button type="submit">🔍 ENCONTRAR</button>
+          <button type="button" onclick="buscarPaciente()">ENCONTRAR</button>
         </div>
       </div>
     </div>
+</form>
 
     <div class="section">
       <h3 class="section-title">📝 Quais dados deseja inserir?</h3>
@@ -33,22 +30,79 @@
       <div class="data-entry-options">
         <div class="data-entry">
           <label>Dados da Anamnese</label>
-          <a href="/Anamnese/Anamnese.html" class="btn"> Cadastrar </a>
+          <a href="/exames/anamnese?cpf=" id="linkAnamnese" class="btn"> Cadastrar </a>
         </div>
         <div class="data-entry">
-          <label>Exame citopatológico</label>
-          <a href="/Laboratório/Laboratório.html" class="btn"> Cadastrar </a>
-        </div>
-        <div class="data-entry">
-          <label>Diagnóstico citopatológico</label>
-          <a href="/Resultado/Resultado.html" class="btn"> Cadastrar </a>
-        </div>
+    <label>Exame citopatológico</label>
+    <a href="/exames/laboratorio?paciente_id=" id="linkLaboratorio" class="btn">Cadastrar</a>
+</div>
+<div class="data-entry">
+    <label>Diagnóstico citopatológico</label>
+    <a href="/exames/resultado?paciente_id=" id="linkResultado" class="btn">Cadastrar</a>
+</div>
       </div>
     </div>
     <div class="salvar-area">
-  <a href="/Profissional/inicioProfissional.html" class="Sair">Salvar</a>
+  <a href="/profissional/inicio" class="Sair">Voltar</a>
     </div>
   </div>
 
+  <script>
+    // Máscara CPF
+    const cpfInput = document.getElementById('cpf');
+    cpfInput.addEventListener('input', function () {
+      let value = this.value.replace(/\D/g, '').slice(0, 11);
+      if (value.length >= 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+      if (value.length >= 6) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+      if (value.length >= 9) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+      this.value = value;
+    });
+
+   function buscarPaciente() {
+    const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+    
+    fetch(`/profissional/buscar-paciente?cpf=${cpf}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.id) {
+                // Armazena em localStorage e atualiza todos os links
+                localStorage.setItem('paciente_id', data.id);
+                localStorage.setItem('paciente_cpf', data.cpf);
+                
+                document.getElementById('linkAnamnese').href = 
+                    `/exames/anamnese?paciente_id=${data.id}`;
+                document.getElementById('linkLaboratorio').href = 
+                    `/exames/laboratorio?paciente_id=${data.id}`;
+                document.getElementById('linkResultado').href = 
+                    `/exames/resultado?paciente_id=${data.id}`;
+                
+                alert(`Paciente ${data.nome_completo} carregado!`);
+            } else {
+                alert('Paciente não encontrado!');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao buscar paciente');
+        });
+}
+
+function formatarCPF(cpf) {
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+// Função para formatar CPF
+function formatCPF(cpf) {
+    if (!cpf) return '';
+    cpf = cpf.replace(/\D/g, '');
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+// Após encontrar o paciente
+localStorage.setItem('paciente_id', data.id);
+document.getElementById('linkAnamnese').href = `/exames/anamnese?paciente_id=${data.id}`;
+document.getElementById('linkLaboratorio').href = `/exames/laboratorio?paciente_id=${data.id}`;
+document.getElementById('linkResultado').href = `/exames/resultado?paciente_id=${data.id}`;
+
+  </script>
 </body>
 </html>
