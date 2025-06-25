@@ -38,7 +38,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Criar sessão (simplificado - em produção usar sessões seguras)
+	// Criar sessão (simplificado - futuramente usar sessões seguras)
 	if usuario.Tipo == "profissional" {
 		http.Redirect(w, r, "/profissional/inicio", http.StatusSeeOther)
 	} else {
@@ -52,10 +52,10 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func registroHandler(w http.ResponseWriter, r *http.Request) {
-	// Always set JSON content type
+	// JSON contendo o tipo
 	w.Header().Set("Content-Type", "application/json")
 
-	// Base response structure
+	// base responsiva struct
 	response := map[string]interface{}{
 		"success": false,
 		"message": "",
@@ -63,7 +63,7 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		"type":    "",
 	}
 
-	// Debug: Log the request method and content type
+	// Debug: registra o método de solicitação e o tipo de conteúdo
 	log.Printf("[REGISTER] Method: %s, Content-Type: %s", r.Method, r.Header.Get("Content-Type"))
 
 	if r.Method == "GET" {
@@ -71,8 +71,8 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// First try to parse as multipart form (for file uploads)
-	// Then fall back to regular form parsing
+	// Analisa o formulário por multipartes (para uploads de arquivos)
+	// Analise do formulário regular
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
 		if err := r.ParseForm(); err != nil {
 			log.Printf("[REGISTER] Failed to parse form: %v", err)
@@ -83,17 +83,17 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Get all form values
+	// envia todas os valores
 	formValues := r.Form
 	log.Printf("[REGISTER] Form values received: %+v", formValues)
 
-	// Extract required fields
+	// Extração de dados
 	email := strings.TrimSpace(formValues.Get("email"))
 	senha := formValues.Get("senha")
 	confirmarSenha := formValues.Get("confirmarSenha")
 	tipo := formValues.Get("tipo")
 
-	// Validate required fields
+	// Validação de dados obrigatórios
 	if email == "" {
 		response["message"] = "Email is required"
 		w.WriteHeader(http.StatusBadRequest)
@@ -115,7 +115,7 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Process registration based on type
+	// Processo de registro baseado no tipo
 	var id int
 	var err error
 
@@ -164,7 +164,7 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle database errors
+	// Handle database erros
 	if err != nil {
 		log.Printf("[REGISTER] Database error: %v", err)
 
@@ -186,7 +186,7 @@ func registroHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Successful registration
+	// registro com sucesso
 	log.Printf("[REGISTER] Successfully registered user ID: %d", id)
 
 	response["success"] = true
@@ -786,7 +786,7 @@ func processarAnamnese(w http.ResponseWriter, r *http.Request, pacienteID int) {
 	http.Redirect(w, r, "/static/Cadastrar exames/cadastroExame.html?success=Anamnese+salva+com+sucesso", http.StatusSeeOther)
 }
 
-// Funções auxiliares para anamnese
+// Funções auxiliares
 
 // parseDate analisa uma string de data no formato YYYY-MM-DD
 func parseDate(dateStr string) time.Time {
