@@ -6,14 +6,15 @@ import (
 )
 
 type Usuario struct {
-	ID        int
-	Email     string
-	Senha     string
-	Tipo      string // "profissional" ou "paciente"
-	CNES      sql.NullString
-	CPF       sql.NullString
-	Telefone  sql.NullString
-	CreatedAt time.Time
+	ID        int            `db:"id"`
+	Email     string         `db:"email"`
+	Senha     string         `db:"senha"`
+	Tipo      string         `db:"tipo"` // "profissional" ou "paciente"
+	CNES      sql.NullString `db:"cnes"`
+	CPF       sql.NullString `db:"cpf"`
+	Telefone  sql.NullString `db:"telefone"`
+	CreatedAt time.Time      `db:"created_at"`
+	UpdatedAt time.Time      `db:"updated_at"`
 }
 
 type Paciente struct {
