@@ -52,43 +52,149 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func registroHandler(w http.ResponseWriter, r *http.Request) {
+	// Always set JSON content type
+	w.Header().Set("Content-Type", "application/json")
+
+	// Base response structure
+	response := map[string]interface{}{
+		"success": false,
+		"message": "",
+		"id":      0,
+		"type":    "",
+	}
+
+	// Debug: Log the request method and content type
+	log.Printf("[REGISTER] Method: %s, Content-Type: %s", r.Method, r.Header.Get("Content-Type"))
+
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "static/Registro/Registro.html")
 		return
 	}
 
-	// Processar registro
-	tipo := r.FormValue("tipo") // profissional ou paciente
-	email := r.FormValue("email")
-	senha := r.FormValue("senha")
-	confirmarSenha := r.FormValue("confirmarSenha")
+	// First try to parse as multipart form (for file uploads)
+	// Then fall back to regular form parsing
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		if err := r.ParseForm(); err != nil {
+			log.Printf("[REGISTER] Failed to parse form: %v", err)
+			response["message"] = "Invalid form data"
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	}
 
-	if senha != confirmarSenha {
-		http.Error(w, "Senhas não coincidem", http.StatusBadRequest)
+	// Get all form values
+	formValues := r.Form
+	log.Printf("[REGISTER] Form values received: %+v", formValues)
+
+	// Extract required fields
+	email := strings.TrimSpace(formValues.Get("email"))
+	senha := formValues.Get("senha")
+	confirmarSenha := formValues.Get("confirmarSenha")
+	tipo := formValues.Get("tipo")
+
+	// Validate required fields
+	if email == "" {
+		response["message"] = "Email is required"
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
-	var id int
-	if tipo == "profissional" {
-		cnes := r.FormValue("cnes")
-		err := db.QueryRow("INSERT INTO usuarios (email, senha, tipo, cnes) VALUES ($1, $2, $3, $4) RETURNING id",
-			email, senha, tipo, cnes).Scan(&id)
-		if err != nil {
-			http.Error(w, "Erro ao registrar profissional", http.StatusInternalServerError)
-			return
-		}
-	} else {
-		cpf := r.FormValue("cpf")
-		telefone := r.FormValue("telefone")
-		err := db.QueryRow("INSERT INTO usuarios (email, senha, tipo, cpf, telefone) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-			email, senha, tipo, cpf, telefone).Scan(&id)
-		if err != nil {
-			http.Error(w, "Erro ao registrar paciente", http.StatusInternalServerError)
-			return
-		}
+	if senha == "" {
+		response["message"] = "Password is required"
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
 	}
 
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	if senha != confirmarSenha {
+		response["message"] = "Passwords don't match"
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	// Process registration based on type
+	var id int
+	var err error
+
+	switch tipo {
+	case "profissional":
+		cnes := strings.TrimSpace(formValues.Get("cnes"))
+		if cnes == "" {
+			response["message"] = "CNES is required for professionals"
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		log.Printf("[REGISTER] Registering professional: %s, CNES: %s", email, cnes)
+
+		err = db.QueryRow(`
+            INSERT INTO usuarios (email, senha, tipo, cnes, created_at, updated_at)
+            VALUES ($1, $2, $3, $4, NOW(), NOW())
+            RETURNING id`,
+			email, senha, tipo, cnes).Scan(&id)
+
+	case "paciente":
+		cpf := strings.ReplaceAll(strings.TrimSpace(formValues.Get("cpf")), ".", "")
+		cpf = strings.ReplaceAll(cpf, "-", "")
+		telefone := strings.TrimSpace(formValues.Get("telefone"))
+
+		if len(cpf) != 11 {
+			response["message"] = "CPF must have 11 digits"
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		log.Printf("[REGISTER] Registering patient: %s, CPF: %s", email, cpf)
+
+		err = db.QueryRow(`
+            INSERT INTO usuarios (email, senha, tipo, cpf, telefone, created_at, updated_at)
+            VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
+            RETURNING id`,
+			email, senha, tipo, cpf, telefone).Scan(&id)
+
+	default:
+		response["message"] = "Invalid user type"
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	// Handle database errors
+	if err != nil {
+		log.Printf("[REGISTER] Database error: %v", err)
+
+		if pqErr, ok := err.(*pq.Error); ok {
+			log.Printf("[REGISTER] PostgreSQL error: %+v", pqErr)
+
+			// Handle unique violation (duplicate email)
+			if pqErr.Code == "23505" {
+				response["message"] = "Email already registered"
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(response)
+				return
+			}
+		}
+
+		response["message"] = "Registration failed"
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	// Successful registration
+	log.Printf("[REGISTER] Successfully registered user ID: %d", id)
+
+	response["success"] = true
+	response["id"] = id
+	response["type"] = tipo
+	response["message"] = "Registration successful"
+
+	json.NewEncoder(w).Encode(response)
 }
 
 // Handlers do profissional
