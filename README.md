@@ -8,6 +8,6 @@ Para a instalação do software:
 
 4- instalar pacotes necessários através dos coemandos "go get github.com/gorilla/sessions" e "go get github.com/lib/pq" no terminal do VSCode (Certifique-se de estar conectado à internet)
 
-5- Para rodar, acesse a pasta dos arquivos no VSCode e digite o comando "ggo run ." no terminal, ele rodará na porta local 8080
+5- Para rodar, acesse a pasta dos arquivos no VSCode e digite o comando "go run ." no terminal, ele rodará na porta local 8080
 
 6- No navegador digite "localhost:8080/Login" e, assim, o software estará funcionando.
