@@ -820,3 +820,141 @@ func parseTime(timeStr string) time.Time {
 	}
 	return t
 }
+
+func resultadoPacienteHandler(w http.ResponseWriter, r *http.Request) {
+	// 1. Obter CPF da query string
+	cpf := r.URL.Query().Get("cpf")
+	if cpf == "" {
+		http.Error(w, "CPF não fornecido", http.StatusBadRequest)
+		return
+	}
+
+	// 2. Remover formatação do CPF
+	cpf = strings.ReplaceAll(cpf, ".", "")
+	cpf = strings.ReplaceAll(cpf, "-", "")
+	cpf = strings.ReplaceAll(cpf, " ", "")
+
+	if len(cpf) != 11 {
+		http.Error(w, "CPF deve conter 11 dígitos", http.StatusBadRequest)
+		return
+	}
+
+	// 3. Buscar o paciente pelo CPF
+	var pacienteID int
+	err := db.QueryRow(`
+        SELECT id FROM pacientes 
+        WHERE REPLACE(REPLACE(cpf, '.', ''), '-', '') = $1`, cpf).Scan(&pacienteID)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Paciente não encontrado", http.StatusNotFound)
+		} else {
+			http.Error(w, "Erro ao buscar paciente", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// 4. Buscar o diagnóstico mais recente com tratamento especial para arrays
+	var (
+		dentroLimitesNormais     sql.NullBool
+		alteracoesBenignasStr    string
+		outrasAlteracoesBenignas sql.NullString
+		celulasAtipicasStr       string
+		atipiasCelularesStr      string
+		outrasNeoplasias         sql.NullString
+		celulasEndometriais      sql.NullBool
+		observacoesGerais        sql.NullString
+		screeningCitotecnico     sql.NullString
+		responsavel              string
+		dataResultado            time.Time
+	)
+
+	err = db.QueryRow(`
+        SELECT 
+            d.dentro_limites_normais,
+            d.alteracoes_benignas,
+            d.outras_alteracoes_benignas,
+            d.celulas_atipicas,
+            d.atipias_celulares,
+            d.outras_neoplasias,
+            d.celulas_endometriais,
+            d.observacoes_gerais,
+            d.screening_citotecnico,
+            d.responsavel,
+            d.data_resultado
+        FROM diagnosticos d
+        JOIN exames_citopatologicos e ON d.exame_id = e.id
+        WHERE e.paciente_id = $1
+        ORDER BY d.data_resultado DESC
+        LIMIT 1`, pacienteID).Scan(
+		&dentroLimitesNormais,
+		&alteracoesBenignasStr,
+		&outrasAlteracoesBenignas,
+		&celulasAtipicasStr,
+		&atipiasCelularesStr,
+		&outrasNeoplasias,
+		&celulasEndometriais,
+		&observacoesGerais,
+		&screeningCitotecnico,
+		&responsavel,
+		&dataResultado,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Nenhum resultado encontrado para este paciente", http.StatusNotFound)
+		} else {
+			log.Printf("Erro ao buscar diagnóstico: %v", err)
+			http.Error(w, "Erro ao buscar diagnóstico", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Função para converter string de array para slice
+	parseArray := func(s string) []string {
+		if s == "" {
+			return []string{}
+		}
+		// Remove possíveis {} e espaços
+		s = strings.Trim(s, "{}")
+		if s == "" {
+			return []string{}
+		}
+		return strings.Split(s, ",")
+	}
+
+	// Criar struct de resposta
+	diagnostico := struct {
+		DentroLimitesNormais     sql.NullBool   `json:"dentro_limites_normais"`
+		AlteracoesBenignas       []string       `json:"alteracoes_benignas"`
+		OutrasAlteracoesBenignas sql.NullString `json:"outras_alteracoes_benignas"`
+		CelulasAtipicas          []string       `json:"celulas_atipicas"`
+		AtipiasCelulares         []string       `json:"atipias_celulares"`
+		OutrasNeoplasias         sql.NullString `json:"outras_neoplasias"`
+		CelulasEndometriais      sql.NullBool   `json:"celulas_endometriais"`
+		ObservacoesGerais        sql.NullString `json:"observacoes_gerais"`
+		ScreeningCitotecnico     sql.NullString `json:"screening_citotecnico"`
+		Responsavel              string         `json:"responsavel"`
+		DataResultado            time.Time      `json:"data_resultado"`
+	}{
+		DentroLimitesNormais:     dentroLimitesNormais,
+		AlteracoesBenignas:       parseArray(alteracoesBenignasStr),
+		OutrasAlteracoesBenignas: outrasAlteracoesBenignas,
+		CelulasAtipicas:          parseArray(celulasAtipicasStr),
+		AtipiasCelulares:         parseArray(atipiasCelularesStr),
+		OutrasNeoplasias:         outrasNeoplasias,
+		CelulasEndometriais:      celulasEndometriais,
+		ObservacoesGerais:        observacoesGerais,
+		ScreeningCitotecnico:     screeningCitotecnico,
+		Responsavel:              responsavel,
+		DataResultado:            dataResultado,
+	}
+
+	// Retornar como JSON
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(diagnostico); err != nil {
+		log.Printf("Erro ao codificar resposta: %v", err)
+		http.Error(w, "Erro ao processar resposta", http.StatusInternalServerError)
+	}
+	
+}
