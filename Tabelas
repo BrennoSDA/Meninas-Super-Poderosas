@@ -1,14 +1,31 @@
--- Criação das tabelas no PgAdmin4 --
+-- Tabela de Usuários (para autenticação)
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    tipo VARCHAR(20) NOT NULL, -- 'profissional' ou 'paciente'
+    cnes VARCHAR(20),
+    cpf VARCHAR(14),
+    telefone VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Tabela de Pacientes
 CREATE TABLE pacientes (
     id SERIAL PRIMARY KEY,
-    cpf VARCHAR(14) UNIQUE NOT NULL,
+    uf VARCHAR(2),
+    cnes VARCHAR(20),
+    protocolo VARCHAR(50),
+    nome_unidade VARCHAR(100),
+    municipio_unidade VARCHAR(100),
     cartao_sus VARCHAR(20),
     nome_completo VARCHAR(100) NOT NULL,
     nome_mae VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14),
     apelido VARCHAR(50),
     data_nascimento DATE NOT NULL,
+    idade INTEGER,
     etnia VARCHAR(20),
     etnia_outra VARCHAR(50),
     logradouro VARCHAR(100),
@@ -20,40 +37,24 @@ CREATE TABLE pacientes (
     municipio_endereco VARCHAR(50),
     cep VARCHAR(9),
     ddd VARCHAR(2),
-    telefone VARCHAR(10),
+    telefone VARCHAR(20),
     ponto_referencia VARCHAR(100),
     escolaridade VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Profissionais
-CREATE TABLE profissionais (
+-- Tabela de Laboratórios
+CREATE TABLE laboratorios (
     id SERIAL PRIMARY KEY,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    cnes VARCHAR(20),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabela de Unidades de Saúde
-CREATE TABLE unidades_saude (
-    id SERIAL PRIMARY KEY,
-    cnes VARCHAR(20) UNIQUE NOT NULL,
-    nome_unidade VARCHAR(100) NOT NULL,
-    uf CHAR(2) NOT NULL,
-    municipio VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    cnes VARCHAR(20) NOT NULL UNIQUE,
+    nome_laboratorio VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de Anamneses
 CREATE TABLE anamneses (
     id SERIAL PRIMARY KEY,
     paciente_id INTEGER REFERENCES pacientes(id) NOT NULL,
-    unidade_saude_id INTEGER REFERENCES unidades_saude(id),
-    protocolo VARCHAR(20),
     motivo TEXT[],
     fez_preventivo VARCHAR(10),
     ultimo_exame_ano VARCHAR(4),
@@ -64,62 +65,74 @@ CREATE TABLE anamneses (
     fez_radioterapia VARCHAR(10),
     ultima_menstruacao DATE,
     nao_lembra_menstruacao BOOLEAN,
-    sangramento_sexual VARCHAR(20),
-    sangramento_menopausa VARCHAR(20),
+    sangramento_pos_sexo VARCHAR(20),
+    sangramento_pos_menopausa VARCHAR(20),
     data_coleta DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Exames Laboratoriais
-CREATE TABLE exames_laboratoriais (
+-- Tabela de Exames Citopatológicos
+CREATE TABLE exames_citopatologicos (
     id SERIAL PRIMARY KEY,
     paciente_id INTEGER REFERENCES pacientes(id) NOT NULL,
-    cnes_lab VARCHAR(20) NOT NULL,
-    nome_lab VARCHAR(100) NOT NULL,
+    laboratorio_id INTEGER REFERENCES laboratorios(id) NOT NULL,
     numero_exame VARCHAR(50) NOT NULL,
     recebido_em DATE NOT NULL,
     amostra_rejeitada VARCHAR(100),
     causa_rejeicao TEXT,
     epitelios TEXT[],
     adequabilidade_material VARCHAR(20),
-    motivos_insatisfatorios TEXT[],
-    outros_motivos TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    motivo_insatisfatorio TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Resultados de Exames
-CREATE TABLE resultados_exames (
+-- Tabela de Diagnósticos
+CREATE TABLE diagnosticos (
     id SERIAL PRIMARY KEY,
-    paciente_id INTEGER REFERENCES pacientes(id) NOT NULL,
-    dentro_limites VARCHAR(3),
+    exame_id INTEGER REFERENCES exames_citopatologicos(id) NOT NULL,
+    dentro_limites_normais BOOLEAN,
     alteracoes_benignas TEXT[],
-    outras_alteracoes TEXT,
-    celulas_atipicas TEXT[],
+    outras_alteracoes_benignas TEXT,
+    celulas_atipicas TEXT,
     atipias_celulares TEXT[],
-    outras_neoplasias TEXT[],
-    outras_neoplasias_texto TEXT,
+    outras_neoplasias TEXT,
     celulas_endometriais BOOLEAN,
     observacoes_gerais TEXT,
     screening_citotecnico TEXT,
     responsavel VARCHAR(100) NOT NULL,
     data_resultado DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de Consultas
 CREATE TABLE consultas (
     id SERIAL PRIMARY KEY,
     paciente_id INTEGER REFERENCES pacientes(id) NOT NULL,
-    profissional_id INTEGER REFERENCES profissionais(id) NOT NULL,
-    unidade_saude_id INTEGER REFERENCES unidades_saude(id) NOT NULL,
+    profissional_id INTEGER REFERENCES usuarios(id) NOT NULL,
     especialidade VARCHAR(50) NOT NULL,
     data_consulta DATE NOT NULL,
     horario TIME NOT NULL,
-    realizada BOOLEAN DEFAULT FALSE,
-    observacoes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    local_consulta VARCHAR(100),
+    status VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Tabela de Exames Clínicos 
+CREATE TABLE exames_clinicos (
+    id SERIAL PRIMARY KEY,
+    paciente_id INTEGER REFERENCES pacientes(id) NOT NULL,
+    profissional_id INTEGER REFERENCES usuarios(id) NOT NULL,
+    inspecao_colo VARCHAR(50),
+    sinais_dst BOOLEAN,
+    observacoes TEXT,
+    data_coleta DATE NOT NULL,
+    responsavel VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Criar índices para melhorar performance
+CREATE INDEX idx_pacientes_cpf ON pacientes(cpf);
+CREATE INDEX idx_pacientes_cartao_sus ON pacientes(cartao_sus);
+CREATE INDEX idx_exames_paciente ON exames_citopatologicos(paciente_id);
+CREATE INDEX idx_diagnosticos_exame ON diagnosticos(exame_id);
+CREATE INDEX idx_consultas_paciente ON consultas(paciente_id);
