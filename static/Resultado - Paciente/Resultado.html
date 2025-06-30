@@ -3,10 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="Resultado.css" />
+  <link rel="stylesheet" href="/static/Resultado - Paciente/Resultado.css" />
   <title>Resultado</title>
 </head>
 <body>
+  <div class="busca-container">
+  <h2>Consultar Resultados</h2>
+  <form id="form-busca">
+    <label for="cpf-busca">Digite seu CPF:</label>
+    <input type="text" id="cpf-busca" name="cpf" placeholder="000.000.000-00" required>
+    <button type="submit" class="btn-buscar">Buscar</button>
+  </form>
+</div>
+
+<div id="mensagem-status" style="display: none;"></div>
   <form>
     <div id="laboratório">
       <h1>Diagnóstico</h1>
@@ -17,21 +27,21 @@
         <!-- Coluna esquerda -->
         <div id="left-column">
           <h5>Dentro dos limites da normalidade no material examinado?</h5>
-          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Sim</label>
-          <label><input type="checkbox" name="option" onclick="onlyOne(this)"> Não</label>
+          <label><input type="checkbox" id="dentro-limites-sim" disabled> Sim</label>
+          <label><input type="checkbox" id="dentro-limites-nao" disabled> Não</label>
 
           <h5>Alterações Celulares Benignas Reativas ou Reparativas</h5>
-          <label><input type="checkbox" name="option"> Inflamação</label>
-          <label><input type="checkbox" name="option"> Metaplasia escamosa imatura</label>
-          <label><input type="checkbox" name="option"> Reparação</label>
-          <label><input type="checkbox" name="option"> Atrofia com inflamação</label>
+          <label><input type="checkbox" id="inflamacao" disabled> Inflamação</label>
+          <label><input type="checkbox" id="metaplasia" disabled> Metaplasia escamosa imatura</label>
+          <label><input type="checkbox" id="reparacao" disabled> Reparação</label>
+          <label><input type="checkbox" id="atrofia" disabled> Atrofia com inflamação</label>
           <label>
-            <input type="checkbox" name="option" onclick="toggleInput(this, 'input1')"> Radiação
-            <input type="text" id="input1" class="especificar">
+            <input type="checkbox" id="radiacao" disabled> Radiação
+            <input type="text" id="radiacao-detalhes" class="especificar" disabled>
           </label>
           <label>
-            <input type="checkbox" name="option" onclick="toggleInput(this, 'input2')"> Outros; especificar:
-            <input type="text" id="input2" class="especificar">
+            <input type="checkbox" id="outras-alteracoes" disabled> Outros; especificar:
+            <input type="text" id="outras-alteracoes-detalhes" class="especificar" disabled>
           </label>
         </div>
 
@@ -40,81 +50,198 @@
           <h4>Células atípicas de significado indeterminado</h4>
 
           <h5>Escamosa:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas (ASC-US)</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada (ASC-H)</label>
+          <label><input type="checkbox" id="ascus" disabled> Possivelmente não neoplásicas (ASC-US)</label>
+          <label><input type="checkbox" id="asch" disabled> Lesão de alto grau não descartada (ASC-H)</label>
 
           <h5>Glandulares:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
-
-          <h5>De origem indefinida:</h5>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Possivelmente não neoplásicas</label>
-          <label><input type="checkbox" name="other" onclick="onlyOne(this)"> Lesão de alto grau não descartada</label>
+          <label><input type="checkbox" id="glandular-nao-neoplasicas" disabled> Possivelmente não neoplásicas</label>
+          <label><input type="checkbox" id="glandular-alto-grau" disabled> Lesão de alto grau não descartada</label>
 
           <h5>Atipias Em Células Escamosas:</h5>
-          <label><input type="checkbox"> Lesão intra-epitelial de baixo grau</label>
-          <label><input type="checkbox"> Lesão intra-epitelial de alto grau</label>
-          <label><input type="checkbox"> Alto grau com possível micro-invasão</label>
-          <label><input type="checkbox"> Carcinoma epidermóide invasor</label>
+          <label><input type="checkbox" id="baixo-grau" disabled> Lesão intra-epitelial de baixo grau</label>
+          <label><input type="checkbox" id="alto-grau" disabled> Lesão intra-epitelial de alto grau</label>
+          <label><input type="checkbox" id="micro-invasao" disabled> Alto grau com possível micro-invasão</label>
+          <label><input type="checkbox" id="carcinoma" disabled> Carcinoma epidermóide invasor</label>
 
           <h5>Atipias Em Células Glandulares</h5>
-          <label><input type="checkbox"> Adenocarcinoma in situ</label>
+          <label><input type="checkbox" id="adenocarcinoma-in-situ" disabled> Adenocarcinoma in situ</label>
           <h6>Adenocarcinoma invasor:</h6>
-          <label><input type="checkbox"> Cervical</label>
-          <label><input type="checkbox"> Endometrial</label>
-          <label><input type="checkbox"> Sem especificações</label>
+          <label><input type="checkbox" id="cervical" disabled> Cervical</label>
+          <label><input type="checkbox" id="endometrial" disabled> Endometrial</label>
+          <label><input type="checkbox" id="sem-especificacoes" disabled> Sem especificações</label>
           <label>
-            <input type="checkbox" onclick="toggleInput(this, 'input3')"> Outras neoplasias malignas:
-            <input type="text" id="input3" class="especificar">
+            <input type="checkbox" id="outras-neoplasias" disabled> Outras neoplasias malignas:
+            <input type="text" id="outras-neoplasias-detalhes" class="especificar" disabled>
           </label>
           <label>
-            <input type="checkbox"> Células endometriais (pós-menopausa ou acima de 40 anos fora do ciclo)
+            <input type="checkbox" id="celulas-endometriais" disabled> Células endometriais (pós-menopausa ou acima de 40 anos fora do ciclo)
           </label>
         </div>
       </div>
 
       <label>Observações Gerais:
-        <input type="text">
+        <input type="text" id="observacoes-gerais" disabled>
       </label>
 
       <label>Screening pelo citotécnico:
-        <input type="text">
+        <input type="text" id="screening-citotecnico" disabled>
       </label>
 
       <label>Responsável:
-        <input type="text">
+        <input type="text" id="responsavel" disabled>
       </label>
 
       <label>Data do resultado:
-        <input type="date">
+        <input type="text" id="data-resultado" disabled>
       </label>
 
-       <div class="salvar-area">
-  <a href="/Paciente/inicioPaciente.html" class="Sair"> Voltar </a>
+      <div class="salvar-area">
+        <a href="/static/Paciente/inicioPaciente.html" class="Sair"> Voltar </a>
+      </div>
     </div>
   </form>
 
   <script>
-    function onlyOne(checkbox) {
-      const groupName = checkbox.name;
-      const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
-      checkboxes.forEach(cb => {
-        if (cb !== checkbox) {
-          cb.checked = false;
-        }
-      });
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+  // Máscara para o CPF
+  const cpfInput = document.getElementById('cpf-busca');
+  cpfInput.addEventListener('input', function() {
+    let value = this.value.replace(/\D/g, '').slice(0, 11);
+    if (value.length >= 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+    if (value.length >= 6) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+    if (value.length >= 9) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+    this.value = value;
+  });
 
-    function toggleInput(checkbox, inputId) {
-      const input = document.getElementById(inputId);
-      if (checkbox.checked) {
-        input.style.display = 'block';
-        input.required = true;
-      } else {
-        input.style.display = 'none';
-        input.required = false;
-      }
+  // Formulário de busca
+document.getElementById('form-busca').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const cpf = document.getElementById('cpf-busca').value;
+    const mensagemStatus = document.getElementById('mensagem-status');
+    
+    // Limpar mensagens anteriores e resetar formulário
+    mensagemStatus.style.display = 'none';
+    mensagemStatus.className = '';
+    resetForm();
+    
+    // Mostrar carregamento
+    mensagemStatus.textContent = 'Buscando resultados...';
+    mensagemStatus.style.display = 'block';
+    mensagemStatus.classList.add('carregando');
+
+    // Fazer a requisição com o CPF
+    fetch(`/paciente/resultado-detalhes?cpf=${encodeURIComponent(cpf)}`)
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 404) {
+                    throw new Error('Nenhum resultado encontrado para este CPF');
+                }
+                throw new Error('Erro ao buscar resultados');
+            }
+            return response.json();
+        })
+        .then(data => {
+            preencherFormulario(data);
+            mensagemStatus.textContent = 'Últimos resultados carregados com sucesso!';
+            mensagemStatus.classList.add('sucesso');
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            mensagemStatus.textContent = error.message;
+            mensagemStatus.classList.add('erro');
+        })
+        .finally(() => {
+            mensagemStatus.style.display = 'block';
+        });
+});
+
+function resetForm() {
+    // Resetar todos os campos do formulário
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.value = '';
+    });
+}
+
+function preencherFormulario(data) {
+    // Preencher os campos do formulário
+    document.getElementById('dentro-limites-sim').checked = data.dentro_limites_normais && data.dentro_limites_normais.Bool;
+    document.getElementById('dentro-limites-nao').checked = data.dentro_limites_normais && !data.dentro_limites_normais.Bool;
+
+    // Alterações benignas
+    const alteracoesBenignas = data.alteracoes_benignas || [];
+    document.getElementById('inflamacao').checked = alteracoesBenignas.includes('Inflamação');
+    document.getElementById('metaplasia').checked = alteracoesBenignas.includes('Metaplasia escamosa imatura');
+    document.getElementById('reparacao').checked = alteracoesBenignas.includes('Reparação');
+    document.getElementById('atrofia').checked = alteracoesBenignas.includes('Atrofia com inflamação');
+    document.getElementById('radiacao').checked = alteracoesBenignas.includes('Radiação');
+    document.getElementById('outras-alteracoes').checked = data.outras_alteracoes_benignas && data.outras_alteracoes_benignas.String !== '';
+    document.getElementById('outras-alteracoes-detalhes').value = data.outras_alteracoes_benignas ? data.outras_alteracoes_benignas.String : '';
+
+    // Células atípicas
+    const celulasAtipicas = data.celulas_atipicas || [];
+    document.getElementById('ascus').checked = celulasAtipicas.includes('ASC-US');
+    document.getElementById('asch').checked = celulasAtipicas.includes('ASC-H');
+   // Células atípicas - Glandulares
+    document.getElementById('glandular-nao-neoplasicas').checked = 
+        data.celulas_atipicas.includes('Glandular não neoplásicas') || 
+        data.celulas_atipicas.includes('glandular_nao_neoplasicas');
+    
+    document.getElementById('glandular-alto-grau').checked = 
+        data.celulas_atipicas.includes('Glandular alto grau') || 
+        data.celulas_atipicas.includes('glandular_alto_grau');
+
+    // Atipias Em Células Escamosas
+    document.getElementById('baixo-grau').checked = 
+        data.atipias_celulares.includes('Baixo grau') || 
+        data.atipias_celulares.includes('baixo_grau') ||
+        data.atipias_celulares.includes('LSIL');
+    
+    document.getElementById('alto-grau').checked = 
+        data.atipias_celulares.includes('Alto grau') || 
+        data.atipias_celulares.includes('alto_grau') ||
+        data.atipias_celulares.includes('HSIL');
+    
+    document.getElementById('micro-invasao').checked = 
+        data.atipias_celulares.includes('Micro-invasão') || 
+        data.atipias_celulares.includes('micro_invasao');
+    
+    document.getElementById('carcinoma').checked = 
+        data.atipias_celulares.includes('Carcinoma') || 
+        data.atipias_celulares.includes('carcinoma');
+
+    
+    // Outras neoplasias
+    const outrasNeoplasias = data.outras_neoplasias ? data.outras_neoplasias.String : '';
+    document.getElementById('cervical').checked = outrasNeoplasias.includes('Cervical');
+    document.getElementById('endometrial').checked = outrasNeoplasias.includes('Endometrial');
+    document.getElementById('sem-especificacoes').checked = outrasNeoplasias.includes('Sem especificações');
+    document.getElementById('outras-neoplasias').checked = outrasNeoplasias.includes('Outras');
+    document.getElementById('outras-neoplasias-detalhes').value = outrasNeoplasias || '';
+    
+    // Células endometriais
+    document.getElementById('celulas-endometriais').checked = data.celulas_endometriais && data.celulas_endometriais.Bool;
+
+    // Outros campos
+    document.getElementById('observacoes-gerais').value = data.observacoes_gerais ? data.observacoes_gerais.String : '';
+    document.getElementById('screening-citotecnico').value = data.screening_citotecnico ? data.screening_citotecnico.String : '';
+    document.getElementById('responsavel').value = data.responsavel || '';
+    
+    // Formatando a data
+    if (data.data_resultado) {
+        const dataResultado = new Date(data.data_resultado);
+        document.getElementById('data-resultado').value = dataResultado.toLocaleDateString('pt-BR');
+    } else {
+        document.getElementById('data-resultado').value = '';
     }
+}
+  });
   </script>
 </body>
 </html>
