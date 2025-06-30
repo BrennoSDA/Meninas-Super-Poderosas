@@ -55,6 +55,7 @@ func main() {
 	router.HandleFunc("/paciente/inicio", pacienteInicioHandler)
 	router.HandleFunc("/paciente/marcar-consulta", marcarConsultaHandler)
 	router.HandleFunc("/paciente/ver-resultados", verResultadosHandler)
+	router.HandleFunc("/paciente/resultado-detalhes", resultadoPacienteHandler)
 
 	// Configurar servidor
 	port := os.Getenv("PORT")
@@ -72,3 +73,4 @@ func main() {
 		log.Fatalf("Erro ao iniciar servidor: %v", err)
 	}
 }
+
