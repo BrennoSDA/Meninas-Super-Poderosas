@@ -3,149 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro</title>
-  <link rel="stylesheet" href="/static/Registro/Registro.css" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/static/Login/Login.css" />
 </head>
 <body>
   <div class="container" id="container">
     <!-- Lado do formulário -->
     <div class="side form-side" id="formSide">
-      <form id="registerForm" action="/registro" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="tipo" id="tipoUsuario" value="profissional">
-        
-        <h2 id="registerTitle">Registro Profissional</h2>
-        
-        <input type="email" name="email" placeholder="Email" required id="email" />
-
-        <!-- Campos que mudam dinamicamente -->
-        <div id="dynamicFields">
-          <input type="text" name="cnes" placeholder="CNES" required id="cnes" />
-        </div>
-
-        <input type="password" name="senha" placeholder="Senha" required id="senha" />
-        <input type="password" name="confirmarSenha" placeholder="Confirmar Senha" required id="confirmarSenha" />
-
-        <button type="submit" href="/static/Login/Login.html">Registrar</button>
+      <form>
+        <h2 id="loginTitle">Login Profissional</h2>
+        <input type="text" placeholder="Usuário ou Email" required />
+        <input type="password" placeholder="Senha" required />
+        <a href="/static/Senha/Senha.html">Esqueci minha senha</a>
+        <a href="/static/Registro/Registro.html">Não possui cadastro? Registre-se</a>
+        <button type="button" id="entrarBtn">Entrar</button>
       </form>
     </div>
 
     <!-- Lado do painel -->
     <div class="side panel-side" id="panelSide">
-      <button id="toggleButton" type="button">Sou Paciente</button>
+      <button id="toggleButton">Trocar para Paciente</button>
     </div>
   </div>
 
-  <!-- Pop-up de sucesso -->
-  <div id="popupSucesso" class="popup-sucesso">
-    Registrado com sucesso!
-  </div>
-
   <script>
-    
-   document.addEventListener('DOMContentLoaded', function() {
-    // Garante que o DOM está totalmente carregado
-    const form = document.getElementById("registerForm");
-    
-    if (!form) {
-        console.error("Formulário não encontrado!");
-        return;
-    }
-    
-    if (!(form instanceof HTMLFormElement)) {
-        console.error("Elemento encontrado não é um formulário!");
-        return;
-    }
-
     const container = document.getElementById("container");
     const toggleButton = document.getElementById("toggleButton");
-    const registerTitle = document.getElementById("registerTitle");
-    const dynamicFields = document.getElementById("dynamicFields");
+    const loginTitle = document.getElementById("loginTitle");
+    const entrarBtn = document.getElementById("entrarBtn");
 
     let isPaciente = false;
 
-    function atualizarCampos() {
-        dynamicFields.innerHTML = isPaciente
-            ? `
-                <input type="text" name="cpf" placeholder="CPF" required id="cpf" />
-                <input type="tel" name="telefone" placeholder="Telefone" required id="telefone" />
-            `
-            : `
-                <input type="text" name="cnes" placeholder="CNES" required id="cnes" />
-            `;
-    }
-
     toggleButton.addEventListener("click", () => {
-        isPaciente = !isPaciente;
-        document.getElementById("tipoUsuario").value = isPaciente ? "paciente" : "profissional";
-        container.classList.toggle("inverted");
+      isPaciente = !isPaciente;
+      container.classList.toggle("inverted");
 
-        registerTitle.textContent = isPaciente ? "Registro Paciente" : "Registro Profissional";
-        toggleButton.textContent = isPaciente ? "Sou Profissional" : "Sou Paciente";
-
-        atualizarCampos();
+      if (isPaciente) {
+        loginTitle.textContent = "Login Paciente";
+        toggleButton.textContent = "Trocar para Profissional";
+      } else {
+        loginTitle.textContent = "Login Profissional";
+        toggleButton.textContent = "Trocar para Paciente";
+      }
     });
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        // Verificação adicional do formulário
-        if (!form.checkValidity()) {
-            console.error("Formulário inválido!");
-            form.reportValidity();
-            return;
-        }
-
-        // Debug: verifique os valores antes de criar o FormData
-        console.log("Email:", form.email.value);
-        console.log("Senha:", form.senha.value);
-
-        try {
-            const formData = new FormData(form);
-            
-            // Debug: verifique o conteúdo do FormData
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
-            
-            // Enviar para o backend
-            fetch('/registro', {
-                method: 'POST',
-                body: formData
-            })
-            .then(async response => {
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || 'Erro no registro');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Resposta do servidor:", data);
-                const popup = document.getElementById("popupSucesso");
-                popup.classList.add("show");
-                
-                setTimeout(() => {
-                    popup.classList.remove("show");
-                    if (data.type === 'profissional') {
-                        window.location.href = "/Login/Login";
-                    } else {
-                        window.location.href = "/Login/Login";
-                    }
-                }, 2000);
-            })
-            .catch(error => {
-                console.error("Erro completo:", error);
-                alert("Erro ao registrar: " + error.message);
-            });
-        } catch (e) {
-            console.error("Erro ao criar FormData:", e);
-            alert("Erro no formulário. Por favor, recarregue a página.");
-        }
+    entrarBtn.addEventListener("click", () => {
+      if (isPaciente) {
+        // Redireciona para a tela do paciente
+        window.location.href = "/static/Paciente/inicioPaciente.html";
+      } else {
+        // Redireciona para a tela do profissional
+        window.location.href = "/static/Profissional/inicioProfissional.html";
+      }
     });
-
-    // Inicializa os campos corretamente
-    atualizarCampos();
-});
   </script>
 </body>
 </html>
