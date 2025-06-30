@@ -266,7 +266,7 @@ func cadastrarPacienteHandler(w http.ResponseWriter, r *http.Request) {
             cartao_sus, nome_completo, nome_mae, cpf, apelido,
             data_nascimento, etnia, etnia_outra,
             logradouro, numero, complemento, bairro,
-            uf_endereco, codigo_municipio, municipio,
+            uf_endereco, codigo_municipio, municipio_endereco,
             cep, ddd, telefone, ponto_referencia, escolaridade
         ) VALUES (
             $1, $2, $3, $4, $5,
