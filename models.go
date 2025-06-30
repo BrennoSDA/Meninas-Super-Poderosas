@@ -46,7 +46,7 @@ type Paciente struct {
 	Bairro          sql.NullString `db:"bairro"`
 	UFEndereco      sql.NullString `db:"uf_endereco"`
 	CodigoMunicipio sql.NullString `db:"codigo_municipio"`
-	Municipio       sql.NullString `db:"municipio"`
+	Municipio       sql.NullString `db:"municipio_endereco"`
 	CEP             sql.NullString `db:"cep"`
 	DDD             sql.NullString `db:"ddd"`
 	Telefone        sql.NullString `db:"telefone"`
