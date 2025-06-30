@@ -591,8 +591,8 @@ func processarResultado(w http.ResponseWriter, r *http.Request, pacienteID int) 
 		AtipiasCelulares:         r.Form["atipias_celulares"],
 		OutrasNeoplasias:         sql.NullString{String: r.FormValue("outras_neoplasias"), Valid: r.FormValue("outras_neoplasias") != ""},
 		CelulasEndometriais:      sql.NullBool{Bool: r.FormValue("celulas_endometriais") == "on", Valid: true},
-		ObservacoesGerais:        sql.NullString{String: r.FormValue("observacoes"), Valid: r.FormValue("observacoes") != ""},
-		ScreeningCitotecnico:     sql.NullString{String: r.FormValue("screening"), Valid: r.FormValue("screening") != ""},
+		ObservacoesGerais:        sql.NullString{String: r.FormValue("observacoes_gerais"), Valid: r.FormValue("observacoes_gerais") != ""},
+		ScreeningCitotecnico:     sql.NullString{String: r.FormValue("screening_citotecnico"), Valid: r.FormValue("screening_citotecnico") != ""},
 		Responsavel:              r.FormValue("responsavel"),
 		DataResultado:            parseDate(r.FormValue("data_resultado")),
 	}
@@ -753,7 +753,7 @@ func processarAnamnese(w http.ResponseWriter, r *http.Request, pacienteID int) {
 
 	// 5. Inserir no banco de dados
 	query := `INSERT INTO anamneses (
-        paciente_id, motivo_exame, fez_preventivo,
+        paciente_id, motivo, fez_preventivo,
         ultimo_exame_ano, usa_diu, gravida, usa_pilula, usa_hormonio_menopausa,
         fez_radioterapia, ultima_menstruacao, nao_lembra_menstruacao,
         sangramento_pos_sexo, sangramento_pos_menopausa, data_coleta
